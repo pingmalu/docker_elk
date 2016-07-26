@@ -1,4 +1,4 @@
-FROM ubuntu:trusty
+FROM tutum/curl:trusty
 MAINTAINER MaLu <malu@malu.me> 
 
 RUN curl http://packages.elasticsearch.org/GPG-KEY-elasticsearch | apt-key add - && \
