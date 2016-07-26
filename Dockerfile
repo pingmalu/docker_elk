@@ -6,8 +6,12 @@ RUN curl http://packages.elasticsearch.org/GPG-KEY-elasticsearch | apt-key add -
 
 RUN apt-get update && apt-get -y upgrade
 RUN apt-get -y install wget vim nginx-full apache2-utils supervisor && \
-    apt-get install -y elasticsearch openjdk-7-jre-headless && \
-    apt-get clean && \
+    apt-get install -y elasticsearch openjdk-7-jre-headless
+
+RUN wget https://download.elastic.co/logstash/logstash/packages/debian/logstash_2.3.4-1_all.deb && \
+    dpkg -i logstash_2.3.4-1_all.deb
+
+RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /opt
@@ -23,7 +27,7 @@ ENV KIBANA_SECURE true
 ENV KIBANA_USER malu
 ENV KIBANA_PASSWORD kibanana
 #ENV ES_USER malu
-#ENV ES_PASS elabc
+#ENV ES_PASS espass
 
 EXPOSE 80 9200
 
