@@ -8,6 +8,7 @@ set -e
 #echo "kibana_elasticsearch_password: $ES_PASS" >> /opt/kibana-4.1.1-linux-x64/config/kibana.yml
 
 if [ "$KIBANA_SECURE" = "true" ] ; then
+    rm /etc/nginx/sites-enabled/kibana
 	ln -s /etc/nginx/sites-available/kibana-secure /etc/nginx/sites-enabled/kibana
 	htpasswd -bc /etc/kibana/htpasswd ${KIBANA_USER} ${KIBANA_PASSWORD}
 else
