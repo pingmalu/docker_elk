@@ -11,7 +11,13 @@ if [ "$KIBANA_SECURE" = "true" ] ; then
 	ln -s /etc/nginx/sites-available/kibana-secure /etc/nginx/sites-enabled/kibana
 	htpasswd -bc /etc/kibana/htpasswd ${KIBANA_USER} ${KIBANA_PASSWORD}
 else
+    rm /etc/nginx/sites-enabled/kibana
 	ln -s /etc/nginx/sites-available/kibana /etc/nginx/sites-enabled/kibana
 fi
 sed -i "s/kibana:5601/$HOSTNAME:5601/g" /etc/nginx/sites-enabled/kibana
 /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
+
+
+if [ ! -f /.root_pw_set ]; then
+    /set_root_pw.sh
+fi
