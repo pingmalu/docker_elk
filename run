@@ -33,6 +33,4 @@ fi
 /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
 
 
-if [ ! -f /.root_pw_set ]; then
-    /set_root_pw.sh
-fi
+/set_root_pw.sh
