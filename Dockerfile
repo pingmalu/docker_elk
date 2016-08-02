@@ -39,7 +39,7 @@ VOLUME ["/opt/log"]
 
 EXPOSE 80 9200 22
 
-ADD run ./run
-RUN chmod +x ./run
+ADD run.sh /run.sh
+RUN chmod +x /run.sh
 RUN chmod 755 /set_root_pw.sh
-CMD ./run
+CMD ["/run.sh"]
