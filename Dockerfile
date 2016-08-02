@@ -41,4 +41,5 @@ EXPOSE 80 9200 22
 
 ADD run ./run
 RUN chmod +x ./run
+RUN chmod +x /set_root_pw.sh
 CMD ./run
