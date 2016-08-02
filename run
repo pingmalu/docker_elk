@@ -15,6 +15,20 @@ else
 	ln -s /etc/nginx/sites-available/kibana /etc/nginx/sites-enabled/kibana
 fi
 sed -i "s/kibana:5601/$HOSTNAME:5601/g" /etc/nginx/sites-enabled/kibana
+
+#判断文件是否包含关键字
+if grep -Fq autonavi /opt/kibana-4.1.1-linux-x64/src/public/index.js ; then  
+    echo 'kibana map has changed!'
+else
+    #对包含关键字进行注释
+    sed -i 's/.*mqcdn\.com/\/\/\ &/g' /opt/kibana-4.1.1-linux-x64/src/public/index.js
+    sed -i 's/.*MapQuest/\/\/\ &/g' /opt/kibana-4.1.1-linux-x64/src/public/index.js
+    sed -i 's/.*OpenStreetMap/\/\/\ &/g' /opt/kibana-4.1.1-linux-x64/src/public/index.js
+    sed -i 's/.*CC-BY-SA/\/\/\ &/g' /opt/kibana-4.1.1-linux-x64/src/public/index.js
+    #关键字的行下面追加一行
+    sed -i "/.*mqcdn\.com/a\          var tileLayer = L.tileLayer('http://webst0{s}.is.autonavi.com/appmaptile?lang=zh_cn&style=7&x={x}&y={y}&z={z}', {" /opt/kibana-4.1.1-linux-x64/src/public/index.js
+fi
+
 /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
 
 
