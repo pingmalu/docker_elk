@@ -13,6 +13,8 @@ RUN mkdir -p /var/run/sshd && sed -i "s/UsePrivilegeSeparation.*/UsePrivilegeSep
 RUN wget https://download.elastic.co/logstash/logstash/packages/debian/logstash_2.3.4-1_all.deb && \
     dpkg -i logstash_2.3.4-1_all.deb
 
+ADD logstash.conf /etc/logstash/conf.d/
+
 RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
