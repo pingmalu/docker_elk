@@ -30,7 +30,7 @@ else
     sed -i "/.*mqcdn\.com/a\          var tileLayer = L.tileLayer('http://webst0{s}.is.autonavi.com/appmaptile?lang=zh_cn&style=7&x={x}&y={y}&z={z}', {" /opt/kibana-4.1.1-linux-x64/src/public/index.js
 fi
 
+/set_root_pw.sh
+
 /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
 
-
-/set_root_pw.sh
