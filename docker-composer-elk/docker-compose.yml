@@ -1,0 +1,49 @@
+version: '2'
+services:
+  es1: #服务名称（不是容器名,名称最好不要含有特殊字符，碰到过用下划线时运行出错）
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.4.3
+    container_name: es1 #容器名称 
+    volumes: #挂载文件
+      - ./es/logs/:/usr/share/logs/
+      - ./config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+    ports:
+      - "9200:9200" #暴露的端口信息和docker run -d -p 80:80一样
+      - "9300:9300"
+    environment: #设置镜像变量，它可以保存变量到镜像里面
+      ES_JAVA_OPTS: "-Xmx512m -Xms512m"
+    networks: #加入指定网络
+      - elk
+    ulimits:
+        nproc: 65535
+        nofile:
+            soft: 65536
+            hard: 65536
+  logstash_test:
+    image: docker.elastic.co/logstash/logstash:6.4.3
+    container_name: logstash01
+    volumes:
+      - ./config/logstash/config/:/usr/share/logstash/config/:ro
+      - ./config/logstash/pipeline/:/usr/share/logstash/pipeline/
+    ports:
+      - "5044:5044"
+      - "9600:9600"
+    environment:
+      LS_JAVA_OPTS: "-Xmx512m -Xms512m"
+    networks:
+      - elk
+    depends_on: #标签解决了容器的依赖、启动先后的问题
+      - es1
+  kibana_test:
+    image: docker.elastic.co/kibana/kibana:6.4.3
+    container_name: kibana01
+    volumes:
+      - ./config/kibana.yml:/usr/share/kibana/config/kibana.yml
+    ports:
+      - "5601:5601"
+    networks:
+      - elk
+    depends_on:
+      - es1
+networks:
+  elk:
+    driver: bridge
